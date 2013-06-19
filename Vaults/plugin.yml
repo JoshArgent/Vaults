@@ -1,0 +1,14 @@
+name: Vaults
+main: org.vanillaworld.Vaults.Main
+version: 1.0.0
+commands:
+  vault:
+    description: Root Vaults command
+    usage: /<command>
+permissions:
+    vaults.*:
+        description: Gives a player unlimited number of vaults
+        default: op
+    vaults.admin:
+        description: Allows a player to do admin tasks in Vaults
+        default: op
