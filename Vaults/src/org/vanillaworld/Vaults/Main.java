@@ -7,7 +7,11 @@ public class Main extends JavaPlugin implements Listener {
 
 	public void onEnable()
 	{
+		Config.plugin = this;
+		Config.generate();
 		
+		this.getServer().getPluginManager().registerEvents(this, this);
+		System.out.print("[Vaults] Vaults enabled!");
 	}
 	
 	public void onDisable()
