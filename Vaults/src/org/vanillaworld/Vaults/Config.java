@@ -21,7 +21,6 @@ public class Config {
 		try {
 			getConfig().save(configFile);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -33,7 +32,7 @@ public class Config {
 		{
 			getConfig().set("version", "1.0.0");
 			getConfig().set("inventory-type", "medium");
-			getConfig().set("caching", "true");
+			getConfig().set("caching", true);
 			getConfig().set("messages.no-vault", "&4You do not have that many vaults!");
 			getConfig().set("messages.no-permission", "&4You do not have permission to do that!");
 		}
