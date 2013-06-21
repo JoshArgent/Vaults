@@ -8,10 +8,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -52,7 +56,6 @@ public class Backend {
 				}
 				System.out.print("[Vaults] Using MySQL Backend.");
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				BackendType = Backends.File;
 				System.out.print("[Vaults] " + e.getMessage());
 			}
@@ -66,7 +69,6 @@ public class Backend {
 				try {
 					VaultsFile.createNewFile();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -108,7 +110,6 @@ public class Backend {
 	        		try {
 						VaultsConfig.save(VaultsFile);
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 	        		ymlToUpdate.clear();
@@ -129,7 +130,6 @@ public class Backend {
 					vault.setInventoryFromString(StringConvertion.numericToString(results.getString(3)));
 				}
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -148,7 +148,6 @@ public class Backend {
 					}
 				}			
 			} catch (InvalidConfigurationException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -169,7 +168,58 @@ public class Backend {
 		}
 	}
 	
+	private static void cachePlayerVault(Vault vault)
+	{
+		if(!Config.getConfig().getBoolean("caching"))
+		{
+			return;
+		}
+		String name = vault.owner;
+		Player player = Bukkit.getPlayerExact(name);
+		if(player != null)
+		{
+			MetadataValue value = new FixedMetadataValue(plugin, vault.toString());
+			player.setMetadata("vaults_" + vault.id, value);
+		}
+	}
 	
+	private static boolean hasCachedVault(String player, int id)
+	{
+		if(!Config.getConfig().getBoolean("caching"))
+		{
+			return false;
+		}
+		if(Bukkit.getPlayerExact(player) != null)
+		{
+			if(Bukkit.getPlayerExact(player).getMetadata("vaults_" + id).size() == 0)
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private static Vault getCachedVault(String player, int id)
+	{
+		Vault vault = new Vault(Config.getConfig().getInt("vault-rows"), player, id);
+		if(!Config.getConfig().getBoolean("caching"))
+		{
+			return vault;
+		}
+		if(Bukkit.getPlayerExact(player) != null)
+		{
+			List<MetadataValue> values = Bukkit.getPlayerExact(player).getMetadata("vaults_" + id);
+			for(MetadataValue value : values)
+			{
+				vault.setInventoryFromString(value.asString());
+			}
+		}
+		return vault;
+	}
 	
 
 }
