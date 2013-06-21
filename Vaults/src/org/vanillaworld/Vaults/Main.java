@@ -15,7 +15,8 @@ public class Main extends JavaPlugin implements Listener {
 	{
 		Config.plugin = this;
 		Config.generate();
-		
+		Backend.plugin = this;
+		Backend.loadData();
 		this.getServer().getPluginManager().registerEvents(this, this);
 		System.out.print("[Vaults] Vaults enabled!");
 	}
@@ -36,7 +37,14 @@ public class Main extends JavaPlugin implements Listener {
 				} catch (VaultNotFoundException e) {
 					sender.sendMessage(ChatColor.RED + "You're vault is empty!");
 				} catch (NotEnoughVaultsException e) {
-					sender.sendMessage(ChatColor.RED + "You are not allowed to have " + e.vaultID + " vaults!");
+					if(sender.getName().equalsIgnoreCase(e.player))
+					{
+						sender.sendMessage(ChatColor.RED + "You are not allowed to have " + e.vaultID + " vaults!");
+					}
+					else
+					{
+						sender.sendMessage(ChatColor.RED + e.player + " does not have " + e.vaultID + " vaults!");
+					}
 				}
 			}
 			else if(args.length == 1)

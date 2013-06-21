@@ -31,6 +31,15 @@ public class Config {
 		if(!configFile.exists())
 		{
 			getConfig().set("version", "1.0.0");
+			getConfig().set("backend.type", "file");
+			getConfig().set("backend.update-period", 20);
+			getConfig().set("backend.file.name", "vaults.yml");
+			getConfig().set("backend.mysql.host", "localhost");
+			getConfig().set("backend.mysql.port", 3306);
+			getConfig().set("backend.mysql.username", "root");
+			getConfig().set("backend.mysql.password", "password");
+			getConfig().set("backend.mysql.database", "playerdata");
+			getConfig().set("backend.mysql.table", "vaults");
 			getConfig().set("inventory-type", "medium");
 			getConfig().set("caching", true);
 			getConfig().set("messages.no-vault", "&4You do not have that many vaults!");
