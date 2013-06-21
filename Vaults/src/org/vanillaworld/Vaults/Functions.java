@@ -32,6 +32,11 @@ public class Functions {
 		if(viewing.containsKey(player))
 		{
 			Vault vault = viewing.get(player);
+			if(vault.getInventory().equals(inventory))
+			{
+				viewing.remove(player);
+				return; // No changes
+			}
 			vault.setInventory(inventory);
 			Backend.savePlayerVault(vault);
 			viewing.remove(player);
