@@ -21,7 +21,7 @@ public class Vault {
 		this.rows = rows;
 		this.owner = owner;
 		this.id = id;
-		if(9 * rows > 54)
+		if(9 * rows > 54 || rows <= 0)
 		{
 			rows = 3;
 		}
