@@ -2,6 +2,8 @@ package org.vanillaworld.Vaults;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.DoubleChestInventory;
@@ -31,6 +33,13 @@ public class Vault {
 	public String toString()
 	{
 		return SerializationUtil.saveInventory(this.inv);
+	}
+	
+	public FileConfiguration toFileConfiguration()
+	{
+		 YamlConfiguration config = new YamlConfiguration();
+		 SerializationUtil.saveInventory(getInventory(), config);
+		 return config;
 	}
 	
 	public void setInventoryFromString(String text)

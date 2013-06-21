@@ -10,8 +10,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -24,7 +26,7 @@ public class Backend {
 	private static FileConfiguration VaultsConfig;
 	public static JavaPlugin plugin;
 	private static List<String> sqlToExecute = new ArrayList<String>();
-	private static Map<String, Integer> ymlToUpdate = new HashMap<String, Integer>();
+	private static List<Vault> ymlToUpdate = new ArrayList<Vault>();
 	
 	public static void loadData()
 	{
@@ -100,16 +102,17 @@ public class Backend {
 	        {
 	        	if(ymlToUpdate.size() > 0)
 	        	{
-	        		for (String player : ymlToUpdate.keySet())
+	        		List<Vault> clone = ymlToUpdate;
+	        		for (Vault vault : clone)
 	        		{
-	        			VaultsConfig.set(player, ymlToUpdate.get(player));
+	        			VaultsConfig.set(vault.owner + "." + vault.id, vault.toFileConfiguration());
 	        		}
 	        		try {
-	        			VaultsConfig.save(VaultsFile);
-	    			} catch (IOException e) {
-	    				// TODO Auto-generated catch block
-	    				e.printStackTrace();
-	    			}
+						VaultsConfig.save(VaultsFile);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 	        		ymlToUpdate.clear();
 	        	}
 	        }
@@ -131,15 +134,41 @@ public class Backend {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}		
+		}
+		else
+		{
+			try {
+				ItemStack items[] = SerializationUtil.loadInventory(VaultsConfig.getConfigurationSection(player + "." + id));
+				if(items != null)
+				{
+					for (ItemStack item : items)
+					{
+						if(item != null)
+						{
+							vault.getInventory().addItem(item);
+						}
+					}
+				}			
+			} catch (InvalidConfigurationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return vault;
 	}
 	
 	public static void savePlayerVault(Vault vault)
 	{
-		String vaultText = StringConvertion.stringToNumeric(vault.toString());
-		sqlToExecute.add("DELETE FROM " + Config.getConfig().getString("backend.mysql.table") + " WHERE Player='" + vault.owner + "' AND InventoryID='" + vault.id + "'");
-		sqlToExecute.add("INSERT INTO " + Config.getConfig().getString("backend.mysql.table") + " (Player, InventoryID, Inventory) VALUES('" + vault.owner + "', '" + vault.id + "', '" + vaultText + "')");
+		if(BackendType.equals(Backends.MySQL))
+		{
+			String vaultText = StringConvertion.stringToNumeric(vault.toString());
+			sqlToExecute.add("DELETE FROM " + Config.getConfig().getString("backend.mysql.table") + " WHERE Player='" + vault.owner + "' AND InventoryID='" + vault.id + "'");
+			sqlToExecute.add("INSERT INTO " + Config.getConfig().getString("backend.mysql.table") + " (Player, InventoryID, Inventory) VALUES('" + vault.owner + "', '" + vault.id + "', '" + vaultText + "')");
+		}
+		else
+		{
+			ymlToUpdate.add(vault);
+		}
 	}
 	
 	
