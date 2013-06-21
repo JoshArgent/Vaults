@@ -4,7 +4,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.vanillaworld.Vaults.Exceptions.NotEnoughVaultsException;
 
@@ -55,6 +57,12 @@ public class Main extends JavaPlugin implements Listener {
 			return true;
 		}
 		return false;
+	}
+	
+	@EventHandler
+	private void inventoryClose(InventoryCloseEvent event)
+	{
+		Functions.inventoryClosed((Player) event.getPlayer(), event.getInventory());
 	}
 	
 }

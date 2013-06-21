@@ -21,16 +21,16 @@ public class Vault {
 		this.rows = rows;
 		this.owner = owner;
 		this.id = id;
-		if(9 * rows > 54 || rows <= 0)
+		if(9 * this.rows > 54 || this.rows <= 0)
 		{
-			rows = 3;
+			this.rows = 3;
 		}
-		inv = Bukkit.getServer().createInventory(null, rows * 9, "Vault #" + id);
+		this.inv = Bukkit.getServer().createInventory(null, this.rows * 9, "Vault #" + id);
 	}
 	
 	public String toString()
 	{
-		return SerializationUtil.saveInventory(inv);
+		return SerializationUtil.saveInventory(this.inv);
 	}
 	
 	public void setInventoryFromString(String text)
@@ -47,18 +47,17 @@ public class Vault {
 		{
 			return;
 		}
-		inv.addItem(items);
+		this.inv.addItem(items);
 	}
 	
 	public Inventory getInventory()
 	{
-		return inv;
+		return this.inv;
 	}
 	
-	public void viewInventory(Player viewer)
+	public void setInventory(Inventory inv)
 	{
-		viewer.openInventory(getInventory());
-		
+		this.inv = inv;
 	}
-
+	
 }
