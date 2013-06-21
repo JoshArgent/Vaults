@@ -136,7 +136,9 @@ public class Backend {
 	
 	public static void savePlayerVault(Vault vault)
 	{
-		
+		String vaultText = vault.toString();
+		sqlToExecute.add("DELETE FROM " + Config.getConfig().getString("backend.mysql.table") + " WHERE Player='" + vault.owner + "' AND InventoryID='" + vault.id + "'");
+		sqlToExecute.add("INSERT INTO " + Config.getConfig().getString("backend.mysql.table") + " (Player, InventoryID, Inventory) VALUES('" + vault.owner + "', '" + vault.id + "', '" + vaultText + "')");
 	}
 	
 	
