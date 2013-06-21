@@ -47,7 +47,13 @@ public class Vault {
 		{
 			return;
 		}
-		this.inv.addItem(items);
+		for (ItemStack item : items)
+		{
+			if(item != null)
+			{
+				this.inv.addItem(item);
+			}
+		}
 	}
 	
 	public Inventory getInventory()

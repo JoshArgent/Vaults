@@ -124,7 +124,7 @@ public class Backend {
 			try {
 				while (results.next()) 
 				{
-					vault.setInventoryFromString(results.getString(3));
+					vault.setInventoryFromString(StringConvertion.numericToString(results.getString(3)));
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -136,7 +136,7 @@ public class Backend {
 	
 	public static void savePlayerVault(Vault vault)
 	{
-		String vaultText = vault.toString();
+		String vaultText = StringConvertion.stringToNumeric(vault.toString());
 		sqlToExecute.add("DELETE FROM " + Config.getConfig().getString("backend.mysql.table") + " WHERE Player='" + vault.owner + "' AND InventoryID='" + vault.id + "'");
 		sqlToExecute.add("INSERT INTO " + Config.getConfig().getString("backend.mysql.table") + " (Player, InventoryID, Inventory) VALUES('" + vault.owner + "', '" + vault.id + "', '" + vaultText + "')");
 	}
