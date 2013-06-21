@@ -183,6 +183,8 @@ public class Backend {
 		Player player = Bukkit.getPlayerExact(name);
 		if(player != null)
 		{
+			MetadataValue value2 = new FixedMetadataValue(plugin, true);
+			player.setMetadata("vaults_refresh", value2);
 			MetadataValue value = new FixedMetadataValue(plugin, vault.toString());
 			player.setMetadata("vaults_" + vault.id, value);
 		}
@@ -196,6 +198,7 @@ public class Backend {
 		}
 		if(Bukkit.getPlayerExact(player) != null)
 		{
+			invalidateCache(Bukkit.getPlayerExact(player), id);
 			if(Bukkit.getPlayerExact(player).getMetadata("vaults_" + id).size() == 0)
 			{
 				return false;
@@ -217,6 +220,7 @@ public class Backend {
 		}
 		if(Bukkit.getPlayerExact(player) != null)
 		{
+			invalidateCache(Bukkit.getPlayerExact(player), id);
 			List<MetadataValue> values = Bukkit.getPlayerExact(player).getMetadata("vaults_" + id);
 			for(MetadataValue value : values)
 			{
@@ -224,6 +228,25 @@ public class Backend {
 			}
 		}
 		return vault;
+	}
+
+	private static void invalidateCache(Player p, int id) 
+	{
+		if(p.hasMetadata("vaults_refresh"))
+		{
+			if(!p.getMetadata("vaults_refresh").get(0).asBoolean())
+			{
+				MetadataValue value = new FixedMetadataValue(plugin, true);
+				p.setMetadata("vaults_refresh", value);
+				p.removeMetadata("vaults_" + id, plugin);
+			}
+		}
+	}
+	
+	public static void clearCache(Player p)
+	{
+		MetadataValue value = new FixedMetadataValue(plugin, false);
+		p.setMetadata("vaults_refresh", value);
 	}
 	
 

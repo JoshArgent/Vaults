@@ -1,5 +1,6 @@
 package org.vanillaworld.Vaults;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -18,6 +19,10 @@ public class Main extends JavaPlugin implements Listener {
 		Config.generate();
 		Backend.plugin = this;
 		Backend.loadData();
+		for(Player p : Bukkit.getOnlinePlayers())
+		{
+			Backend.clearCache(p);
+		}
 		this.getServer().getPluginManager().registerEvents(this, this);
 		System.out.print("[Vaults] Vaults enabled!");
 	}
