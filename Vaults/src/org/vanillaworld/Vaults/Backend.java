@@ -88,7 +88,8 @@ public class Backend {
 	        {
 	        	if(sqlToExecute.size() > 0)
 	        	{
-	        		for (String sql : sqlToExecute)
+	        		List<String> clone = sqlToExecute;
+	        		for (String sql : clone)
 	        		{
 	        			sqlConnection.executeUpdate(sql);
 	        		}
