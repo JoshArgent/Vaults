@@ -134,6 +134,11 @@ public class Backend {
 		return vault;
 	}
 	
+	public static void savePlayerVault(Vault vault)
+	{
+		
+	}
+	
 	
 	
 

@@ -29,7 +29,13 @@ public class Functions {
 	
 	public static void inventoryClosed(Player player, Inventory inventory)
 	{
-		
+		if(viewing.containsKey(player))
+		{
+			Vault vault = viewing.get(player);
+			vault.setInventory(inventory);
+			Backend.savePlayerVault(vault);
+			viewing.remove(player);
+		}
 	}
 
 }
