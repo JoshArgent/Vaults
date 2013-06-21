@@ -120,6 +120,10 @@ public class Backend {
 
 	public static Vault getPlayerVault(String player, int id)
 	{
+		if(hasCachedVault(player, id))
+		{
+			return getCachedVault(player, id);
+		}
 		Vault vault = new Vault(Config.getConfig().getInt("vault-rows"), player, id);
 		if(BackendType.equals(Backends.MySQL))
 		{
@@ -156,6 +160,7 @@ public class Backend {
 	
 	public static void savePlayerVault(Vault vault)
 	{
+		cachePlayerVault(vault);
 		if(BackendType.equals(Backends.MySQL))
 		{
 			String vaultText = StringConvertion.stringToNumeric(vault.toString());
