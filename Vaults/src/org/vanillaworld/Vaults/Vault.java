@@ -1,9 +1,11 @@
 package org.vanillaworld.Vaults;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 public class Vault {
 	
@@ -49,7 +51,7 @@ public class Vault {
 		}
 		else if(type.equals(VaultType.Large))
 		{
-			DoubleChestInventory bigInv = (DoubleChestInventory) smallInv;
+			bigInv = (DoubleChestInventory) smallInv;
 		}
 		
 	}
@@ -58,13 +60,36 @@ public class Vault {
 	{
 		if(type.equals(VaultType.Large))
 		{
-			return InventorySerializer.InventoryToString(bigInv);
+			return SerializationUtil.saveInventory(bigInv);
 		}
 		else
 		{
-			return InventorySerializer.InventoryToString(smallInv);
+			return SerializationUtil.saveInventory(smallInv);
 		}
+	}
 	
+	public void setInventoryFromString(String text)
+	{
+		ItemStack items[];
+		try {
+			items = SerializationUtil.loadInventory(text);
+		} catch (InvalidConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
+		}
+		if(items == null)
+		{
+			return;
+		}
+		if(type.equals(VaultType.Large))
+		{
+			bigInv.addItem(items);
+		}
+		else
+		{
+			smallInv.addItem(items);
+		}
 	}
 	
 	public Inventory getInventory()
