@@ -46,9 +46,7 @@ public class StringConvertion {
 			}
 			String decoded;
 			try {
-				decoded = new String(byteArray, "UTF-16");
-				System.out.print(decoded);
-				
+				decoded = new String(byteArray, "UTF-16");			
 				return decoded;
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
