@@ -114,8 +114,25 @@ public class Backend {
 	        }
 	    }
 	}
-	
-	
+
+	public static Vault getPlayerVault(String player, int id)
+	{
+		Vault vault = new Vault(Config.getConfig().getInt("vault-rows"), player, id);
+		if(BackendType.equals(Backends.MySQL))
+		{
+			ResultSet results = sqlConnection.dbStm("SELECT * FROM " + Config.getConfig().getString("backend.mysql.table") + " WHERE Player='" + player + "' AND InventoryID='" + id + "'");
+			try {
+				while (results.next()) 
+				{
+					vault.setInventoryFromString(results.getString(3));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}		
+		return vault;
+	}
 	
 	
 	

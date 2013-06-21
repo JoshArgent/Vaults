@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.vanillaworld.Vaults.Exceptions.NotEnoughVaultsException;
-import org.vanillaworld.Vaults.Exceptions.VaultNotFoundException;
 
 public class Main extends JavaPlugin implements Listener {
 
@@ -34,8 +33,6 @@ public class Main extends JavaPlugin implements Listener {
 			{
 				try {
 					Functions.openVault((Player) sender, sender.getName(), 1);
-				} catch (VaultNotFoundException e) {
-					sender.sendMessage(ChatColor.RED + "You're vault is empty!");
 				} catch (NotEnoughVaultsException e) {
 					if(sender.getName().equalsIgnoreCase(e.player))
 					{

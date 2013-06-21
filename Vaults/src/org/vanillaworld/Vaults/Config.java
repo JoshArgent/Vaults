@@ -40,7 +40,7 @@ public class Config {
 			getConfig().set("backend.mysql.password", "password");
 			getConfig().set("backend.mysql.database", "playerdata");
 			getConfig().set("backend.mysql.table", "vaults");
-			getConfig().set("inventory-type", "medium");
+			getConfig().set("vault-rows", "3");
 			getConfig().set("caching", true);
 			getConfig().set("messages.no-vault", "&4You do not have that many vaults!");
 			getConfig().set("messages.no-permission", "&4You do not have permission to do that!");
