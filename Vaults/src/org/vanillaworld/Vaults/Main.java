@@ -42,19 +42,36 @@ public class Main extends JavaPlugin implements Listener {
 				try {
 					Functions.openVault((Player) sender, sender.getName(), 1);
 				} catch (NotEnoughVaultsException e) {
-					if(sender.getName().equalsIgnoreCase(e.player))
-					{
-						sender.sendMessage(ChatColor.RED + "You are not allowed to have " + e.vaultID + " vaults!");
-					}
-					else
-					{
-						sender.sendMessage(ChatColor.RED + e.player + " does not have " + e.vaultID + " vaults!");
-					}
+					sender.sendMessage(Functions.convertColours(Config.getConfig().getString("messages.no-vault")));
 				}
 			}
 			else if(args.length == 1)
 			{
-				
+				if(Functions.isNumeric(args[0]))
+				{
+					// Open own player vault args[0]
+					try {
+						Functions.openVault((Player) sender, sender.getName(), Integer.valueOf(args[0]));
+					} catch (NotEnoughVaultsException e) {
+						sender.sendMessage(Functions.convertColours(Config.getConfig().getString("messages.no-vault")));
+					}
+				}
+				else
+				{
+					// View someone elses first vault
+					if(Functions.isAdmin((Player) sender))
+					{
+						try {
+							Functions.openVault((Player) sender, args[0], 1);
+						} catch (NotEnoughVaultsException e) {
+							sender.sendMessage(Functions.convertColours(Config.getConfig().getString("messages.admin-view-no-vault"), args[0]));
+						}
+					}
+					else
+					{
+						sender.sendMessage(Functions.convertColours(Config.getConfig().getString("messages.need-to-specify-number")));
+					}
+				}
 			}
 			else if(args.length == 2)
 			{

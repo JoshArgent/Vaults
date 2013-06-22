@@ -43,7 +43,9 @@ public class Config {
 			getConfig().set("vault-rows", 3);
 			getConfig().set("caching", true);
 			getConfig().set("messages.no-vault", "&4You do not have that many vaults!");
+			getConfig().set("messages.need-to-specify-number", "&4You need to specify a vault number. For example /vault 3");
 			getConfig().set("messages.no-permission", "&4You do not have permission to do that!");
+			getConfig().set("messages.admin-view-no-vault", "&4<player> is not allowed that many vaults!");
 		}
 		saveConfig();
 	}

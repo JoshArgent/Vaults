@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.vanillaworld.Vaults.Exceptions.NotEnoughVaultsException;
@@ -40,6 +41,36 @@ public class Functions {
 			vault.setInventory(inventory);
 			Backend.savePlayerVault(vault);
 			viewing.remove(player);
+		}
+	}
+	
+	public static String convertColours(String t1)
+	{
+		String t2 = ChatColor.translateAlternateColorCodes("&".toCharArray()[0], t1);
+		return t2;
+	}
+	
+	public static String convertColours(String t1, String player)
+	{
+		String t2 = ChatColor.translateAlternateColorCodes("&".toCharArray()[0], t1);
+		t2 = t2.replace("<player>", player);
+		return t2;
+	}
+	
+	public static boolean isNumeric(String str)
+	{
+	  return str.matches("-?\\d+(\\.\\d+)?");
+	}
+	
+	public static boolean isAdmin(Player p)
+	{
+		if(p.hasPermission("vaults.admin") || p.isOp())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 
