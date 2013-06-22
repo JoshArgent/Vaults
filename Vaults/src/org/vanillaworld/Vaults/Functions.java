@@ -19,7 +19,7 @@ public class Functions {
 		{
 			Player p = Bukkit.getPlayerExact(name);
 			boolean hasPerm = false;
-			int num = 1;
+			int num = id;
 			while (num != 1000)
 			{
 				if(p.hasPermission("vaults." + num))
@@ -29,7 +29,6 @@ public class Functions {
 				}
 				num += 1;
 			}
-			
 			if(!hasPerm && !p.isOp())
 			{
 				throw new Exceptions.NotEnoughVaultsException(name, id);
