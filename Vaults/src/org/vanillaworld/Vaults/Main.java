@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.vanillaworld.Vaults.Exceptions.NotEnoughVaultsException;
 
@@ -68,6 +69,12 @@ public class Main extends JavaPlugin implements Listener {
 	private void inventoryClose(InventoryCloseEvent event)
 	{
 		Functions.inventoryClosed((Player) event.getPlayer(), event.getInventory());
+	}
+	
+	@EventHandler
+	private void playerJoin(PlayerJoinEvent event)
+	{
+		Backend.clearCache(event.getPlayer());
 	}
 	
 }
