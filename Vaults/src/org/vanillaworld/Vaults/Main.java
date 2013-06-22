@@ -61,7 +61,7 @@ public class Main extends JavaPlugin implements Listener {
 					// View someone elses first vault
 					if(Functions.isAdmin((Player) sender))
 					{
-						if(Bukkit.getOfflinePlayer(args[0]) == null)
+						if(!Bukkit.getOfflinePlayer(args[0]).hasPlayedBefore())
 						{
 							sender.sendMessage(ChatColor.DARK_RED + "Player doesn't exist!");
 							return true;
@@ -82,7 +82,7 @@ public class Main extends JavaPlugin implements Listener {
 			{
 				if(Functions.isAdmin((Player) sender))
 				{
-					if(Bukkit.getOfflinePlayer(args[0]) == null)
+					if(!Bukkit.getOfflinePlayer(args[0]).hasPlayedBefore())
 					{
 						sender.sendMessage(ChatColor.DARK_RED + "Player doesn't exist!");
 						return true;
