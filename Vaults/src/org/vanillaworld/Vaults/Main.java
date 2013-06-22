@@ -75,7 +75,25 @@ public class Main extends JavaPlugin implements Listener {
 			}
 			else if(args.length == 2)
 			{
-				
+				if(Functions.isAdmin((Player) sender))
+				{
+					if(Functions.isNumeric(args[1]))
+					{
+						try {
+							Functions.openVault((Player) sender, args[0], Integer.valueOf(args[1]));
+						} catch (NotEnoughVaultsException e) {
+							sender.sendMessage(Functions.convertColours(Config.getConfig().getString("messages.admin-view-no-vault"), args[0]));
+						}
+					}
+					else
+					{
+						sender.sendMessage(Functions.convertColours(Config.getConfig().getString("messages.need-to-specify-number")));
+					}
+				}
+				else
+				{
+					sender.sendMessage(Functions.convertColours(Config.getConfig().getString("messages.no-permission")));
+				}
 			}
 			return true;
 		}
