@@ -18,7 +18,19 @@ public class Functions {
 		if(Bukkit.getPlayerExact(name) != null)
 		{
 			Player p = Bukkit.getPlayerExact(name);
-			if(!p.hasPermission("vaults." + id) && !p.isOp())
+			boolean hasPerm = false;
+			int num = 1;
+			while (num != 1000)
+			{
+				if(p.hasPermission("vaults." + num))
+				{
+					hasPerm = true;
+					break;
+				}
+				num += 1;
+			}
+			
+			if(!hasPerm && !p.isOp())
 			{
 				throw new Exceptions.NotEnoughVaultsException(name, id);
 			}
