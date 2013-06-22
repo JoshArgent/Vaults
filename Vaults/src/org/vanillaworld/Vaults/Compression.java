@@ -10,7 +10,7 @@ import java.util.zip.InflaterInputStream;
 
 public class Compression {
 	
-	 public static byte[] compress(String text) {
+	 public static String compress(String text) {
 	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 	        try {
 	            OutputStream out = new DeflaterOutputStream(baos);
@@ -19,11 +19,12 @@ public class Compression {
 	        } catch (IOException e) {
 	            throw new AssertionError(e);
 	        }
-	        return baos.toByteArray();
+	        return new String(baos.toByteArray());
 	    }
 
-	    public static String decompress(byte[] bytes) {
-	        InputStream in = new InflaterInputStream(new ByteArrayInputStream(bytes));
+	    public static String decompress(String bytes) {
+	    	
+	        InputStream in = new InflaterInputStream(new ByteArrayInputStream(bytes.getBytes()));
 	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 	        try {
 	            byte[] buffer = new byte[8192];
