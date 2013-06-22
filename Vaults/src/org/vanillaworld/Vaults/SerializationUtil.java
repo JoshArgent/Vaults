@@ -42,6 +42,10 @@ public class SerializationUtil {
         List<ItemStack> stacks = new ArrayList<ItemStack>();
         
         try {
+        	if(source == null) // Null vault
+        	{
+        		return null;
+        	}
             // Try to parse this inventory
             for (String key : source.getKeys(false)) {
                 int number = Integer.parseInt(key);
