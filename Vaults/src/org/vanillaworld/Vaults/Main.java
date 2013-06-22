@@ -1,6 +1,7 @@
 package org.vanillaworld.Vaults;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -60,6 +61,11 @@ public class Main extends JavaPlugin implements Listener {
 					// View someone elses first vault
 					if(Functions.isAdmin((Player) sender))
 					{
+						if(Bukkit.getOfflinePlayer(args[0]) == null)
+						{
+							sender.sendMessage(ChatColor.DARK_RED + "Player doesn't exist!");
+							return true;
+						}
 						try {
 							Functions.openVault((Player) sender, args[0], 1);
 						} catch (NotEnoughVaultsException e) {
@@ -76,6 +82,11 @@ public class Main extends JavaPlugin implements Listener {
 			{
 				if(Functions.isAdmin((Player) sender))
 				{
+					if(Bukkit.getOfflinePlayer(args[0]) == null)
+					{
+						sender.sendMessage(ChatColor.DARK_RED + "Player doesn't exist!");
+						return true;
+					}
 					if(Functions.isNumeric(args[1]))
 					{
 						try {
