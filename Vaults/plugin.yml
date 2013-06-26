@@ -1,6 +1,6 @@
 name: Vaults
 main: org.vanillaworld.Vaults.Main
-version: 1.0.0
+version: 1.0.1
 commands:
   vault:
     description: Root Vaults command

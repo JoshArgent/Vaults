@@ -17,7 +17,6 @@ public class StringConvertion {
 			{
 				encoded += b.intValue() + ",";
 			}
-			encoded = Compression.compress(encoded);
 			return encoded;
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
@@ -32,7 +31,7 @@ public class StringConvertion {
 		{
 			return "";
 		}
-			text = Compression.decompress(text);
+
 			String[] split = text.split(",");
 			byte[] byteArray = new byte[split.length];
 			int num = 0;

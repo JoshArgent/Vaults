@@ -90,7 +90,7 @@ public class Backend {
 	        {
 	        	if(sqlToExecute.size() > 0)
 	        	{
-	        		List<String> clone = sqlToExecute;
+	        		String[] clone = sqlToExecute.toArray(new String[0]);
 	        		for (String sql : clone)
 	        		{
 	        			sqlConnection.executeUpdate(sql);
@@ -102,7 +102,7 @@ public class Backend {
 	        {
 	        	if(ymlToUpdate.size() > 0)
 	        	{
-	        		List<Vault> clone = ymlToUpdate;
+	        		Vault[] clone = ymlToUpdate.toArray(new Vault[0]);
 	        		for (Vault vault : clone)
 	        		{
 	        			VaultsConfig.set(vault.owner + "." + vault.id, vault.toFileConfiguration());
