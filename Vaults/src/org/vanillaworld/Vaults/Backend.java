@@ -54,6 +54,7 @@ public class Backend {
 					System.out.print("[Vaults] Creating MySQL table.");
 					sqlConnection.executeUpdate("CREATE TABLE " + Config.getConfig().getString("backend.mysql.table") + " (Player CHAR(16), InventoryID INT, Inventory TEXT);");
 				}
+				resultSet.close();
 				System.out.print("[Vaults] Using MySQL Backend.");
 			} catch (SQLException e) {
 				BackendType = Backends.File;
@@ -136,6 +137,7 @@ public class Backend {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			results.close();
 		}
 		else
 		{
