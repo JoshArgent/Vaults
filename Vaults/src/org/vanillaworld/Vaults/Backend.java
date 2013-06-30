@@ -137,7 +137,11 @@ public class Backend {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			results.close();
+			try {
+				results.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		else
 		{
