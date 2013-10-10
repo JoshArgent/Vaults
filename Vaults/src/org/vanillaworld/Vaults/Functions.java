@@ -13,30 +13,55 @@ public class Functions {
 	
 	private static Map<Player, Vault> viewing = new HashMap<Player, Vault>();
 	
-	public static void openVault(Player viewer, String name, int id) throws NotEnoughVaultsException
+	
+	//Fixed lag issue, could be cleaned up
+	public static void openVault(final Player viewer, final String name, final int id) throws NotEnoughVaultsException
 	{
-		if(Bukkit.getPlayerExact(name) != null)
+		Bukkit.getScheduler().runTaskAsynchronously(Config.Plugin, new Runnable()
 		{
-			Player p = Bukkit.getPlayerExact(name);
-			boolean hasPerm = false;
-			int num = id;
-			while (num != 1000)
+			@Override
+			public void run() 
 			{
-				if(p.hasPermission("vaults." + num))
+				if(Bukkit.getPlayerExact(name) != null)
 				{
-					hasPerm = true;
-					break;
+					Player p = Bukkit.getPlayerExact(name);
+					boolean hasPerm = false;
+					int num = id;
+					
+					while (num != 1000)
+					{
+						if(p.hasPermission("vaults." + num))
+						{
+							hasPerm = true;
+							break;
+						}
+						num += 1;
+					}
+					
+					if(!hasPerm && !p.isOp())
+					{
+						try 
+						{
+							throw new Exceptions.NotEnoughVaultsException(name, id);
+						} catch (NotEnoughVaultsException e) 
+						{
+							e.printStackTrace();
+						}
+					}
 				}
-				num += 1;
+				
+				final Vault vault = Backend.getPlayerVault(name, id);
+				Bukkit.getScheduler().runTask(Config.Plugin, new Runnable()
+				{
+					@Override
+					public void run() 
+					{
+						viewer.openInventory(vault.getInventory());
+						viewing.put(viewer, vault);
+					}
+				});
 			}
-			if(!hasPerm && !p.isOp())
-			{
-				throw new Exceptions.NotEnoughVaultsException(name, id);
-			}
-		}
-		Vault vault = Backend.getPlayerVault(name, id);
-		viewer.openInventory(vault.getInventory());
-		viewing.put(viewer, vault);
+		});
 	}
 	
 	public static void inventoryClosed(Player player, Inventory inventory)
@@ -44,16 +69,29 @@ public class Functions {
 		if(viewing.containsKey(player))
 		{
 			Vault vault = viewing.get(player);
+			
 			if(vault.getInventory().equals(inventory))
 			{
 				viewing.remove(player);
 				return; // No changes
 			}
+			
 			vault.setInventory(inventory);
-			Backend.savePlayerVault(vault);
+			
+			final Vault vault1 = vault;
+			Bukkit.getScheduler().runTaskAsynchronously(Config.Plugin, new Runnable()
+			{
+				@Override
+				public void run() 
+				{
+					Backend.savePlayerVault(vault1);
+				}
+			});
+			
 			viewing.remove(player);
 		}
 	}
+	
 	
 	public static String convertColours(String t1)
 	{
@@ -68,9 +106,25 @@ public class Functions {
 		return t2;
 	}
 	
+	
+	public static boolean shouldOpenVault(int pageNumber)
+	{
+		//Added a range of 1 to 100 (end points inclusive)
+		return (pageNumber >= 1) && (pageNumber <= 100);
+	}
+	
 	public static boolean isNumeric(String str)
 	{
-	  return str.matches("-?\\d+(\\.\\d+)?");
+		//Fixes the negative number and using large numbers to crash servers
+		boolean match = str.matches("^(?!^0)\\d{1,9}$");
+		
+		if(match)
+		{
+			int i = Integer.parseInt(str);
+			match = match && shouldOpenVault(i);
+		}
+		
+		return match;
 	}
 	
 	public static boolean isAdmin(Player p)
